@@ -398,12 +398,17 @@ class PaginatedDataTableState extends State<PaginatedDataTable> {
         ),
       ]);
     }
+    int firstRow = _rowCount > 0 ? _firstRowIndex + 1 : 0;
+    int lastRow = _firstRowIndex + widget.rowsPerPage;
+    if (lastRow > _rowCount) {
+      lastRow = _rowCount;
+    }
     footerWidgets.addAll(<Widget>[
       Container(width: 32.0),
       Text(
         localizations.pageRowsInfoTitle(
-          _firstRowIndex + 1,
-          _firstRowIndex + widget.rowsPerPage,
+          firstRow,
+          lastRow,
           _rowCount,
           _rowCountApproximate,
         ),
@@ -420,7 +425,7 @@ class PaginatedDataTableState extends State<PaginatedDataTable> {
         icon: const Icon(Icons.chevron_right),
         padding: EdgeInsets.zero,
         tooltip: localizations.nextPageTooltip,
-        onPressed: (!_rowCountApproximate && (_firstRowIndex + widget.rowsPerPage >= _rowCount)) ? null : _handleNext,
+        onPressed: (!_rowCountApproximate && (lastRow >= _rowCount)) ? null : _handleNext,
       ),
       Container(width: 14.0),
     ]);
